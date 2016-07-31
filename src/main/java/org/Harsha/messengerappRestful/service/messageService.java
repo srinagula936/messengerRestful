@@ -14,9 +14,7 @@ public class messageService {
 	public messageService()
 	{
 		messages.put(1L, new Message(1,"Hello","Harsha"));
-		messages.put(2L, new Message(1,"world","sri"));
-
-		
+		messages.put(2L, new Message(1,"world","sri"));	
 	}
 	
 	public List<Message> getAllMessages()
