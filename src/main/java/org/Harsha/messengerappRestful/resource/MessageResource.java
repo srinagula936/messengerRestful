@@ -2,6 +2,7 @@ package org.Harsha.messengerappRestful.resource;
 
 import java.util.List;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,6 +15,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.Harsha.messengerappRestful.model.Message;
+import org.Harsha.messengerappRestful.resource.beans.MessageFilterBean;
 import org.Harsha.messengerappRestful.service.messageService;
 
 @Path("/messages") //when there is a request to /messages in http url the methods inside of this will execute
@@ -26,15 +28,15 @@ public class MessageResource {
 	@GET //get method which returns the get method
 	//@Produces(MediaType.TEXT_PLAIN) //indicates the response is plain text
 	@Produces(MediaType.APPLICATION_JSON) //indicates the response is xml response
-	public List<Message> getMessages(@QueryParam("year") int year, @QueryParam("start") int start, @QueryParam("size") int size)
+	public List<Message> getMessages(@BeanParam MessageFilterBean filterBean)
 	{	
-		if(year>0)
+		if(filterBean.getYear()>0)
 		{
-			return messageService.getAllMessageForYear(year);
+			return messageService.getAllMessageForYear(filterBean.getYear());
 		}
-		if(start>=0 && size >= 0)
+		if(filterBean.getStart()>=0 && filterBean.getSize() >= 0)
 		{
-			return messageService.getAllMessagePaginated(start, size);
+			return messageService.getAllMessagePaginated(filterBean.getStart(), filterBean.getSize());
 		}
 		return messageService.getAllMessages();
 	}
@@ -72,5 +74,11 @@ public class MessageResource {
 	public Message getMessage(@PathParam("messageId") long id)
 	{
 		return messageService.getMessage(id);
+	}
+	
+	@Path("/{messageId}/comments")
+	public Object getCommentResource()
+	{
+		return new CommentResource();
 	}
 }
